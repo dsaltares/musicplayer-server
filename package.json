@@ -14,6 +14,7 @@
     },
     "dependencies": {
         "express": "^4.16.4",
+        "googleapis": "^27.0.0",
         "music-metadata": "^3.5.2"
     },
     "jest": {
