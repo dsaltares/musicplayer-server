@@ -4,6 +4,7 @@
     "description": "Backend for a basic music player",
     "scripts": {
         "test": "jest",
+        "coverage": "jest --coverage",
         "lint": "eslint .",
         "start": "node src/server.js"
     },
@@ -13,5 +14,15 @@
     },
     "dependencies": {
         "express": "^4.16.4"
+    },
+    "jest": {
+        "collectCoverage": true,
+        "coverageReporters": ["json", "lcov", "text", "clover", "html"],
+        "collectCoverageFrom": [
+            "**/*.js",
+            "!**/*.test.js",
+            "!**/node_modules/**",
+            "!**/coverage/**"
+          ]
     }
 }
