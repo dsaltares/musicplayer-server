@@ -4,10 +4,14 @@
     "description": "Backend for a basic music player",
     "scripts": {
         "test": "jest",
-        "lint": "eslint ."
+        "lint": "eslint .",
+        "start": "node src/server.js"
     },
     "devDependencies": {
         "eslint": "^5.15.1",
         "jest": "^24.3.1"
+    },
+    "dependencies": {
+        "express": "^4.16.4"
     }
 }
