@@ -63,3 +63,6 @@ typings/
 # sonar
 .scannerwork
 sonar.bat
+
+# APIs
+credentials.json
