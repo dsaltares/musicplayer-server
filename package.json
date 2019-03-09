@@ -1,0 +1,13 @@
+{
+    "name": "musicplayer-server",
+    "version": "1.0.0",
+    "description": "Backend for a basic music player",
+    "scripts": {
+        "test": "jest",
+        "lint": "eslint ."
+    },
+    "devDependencies": {
+        "eslint": "^5.15.1",
+        "jest": "^24.3.1"
+    }
+}
