@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/dsaltares/musicplayer-server.svg?branch=master)](https://travis-ci.org/dsaltares/musicplayer-server)
 [![codecov](https://codecov.io/gh/dsaltares/musicplayer-server/branch/master/graph/badge.svg)](https://codecov.io/gh/dsaltares/musicplayer-server)
+[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=dsaltares_musicplayer-server&metric=alert_status)](https://sonarcloud.io/dashboard?id=dsaltares_musicplayer-server)
 
 Backend for a simple music player app written in [Node.js](https://nodejs.org/en/) using [Express](https://expressjs.com/). It gets a list of tracks from a folder in the user's Google Drive account and fetches track metadata from [Last.fm](https://www.last.fm/api).
 
