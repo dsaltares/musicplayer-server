@@ -1,5 +1,13 @@
+const fs = require('fs');
 const express = require('express');
-const processor = require('./requestprocessor');
+const Processor = require('./requestprocessor');
+
+const googleCredentials = JSON.parse(fs.readFileSync('credentials.json', 'utf-8'));
+const lastFmApiKey = fs.readFileSync('lastfm_api_key.txt', 'utf-8').trim();
+const processor = Processor({
+    googleCredentials,
+    lastFmApiKey
+});
 
 const router = express.Router();
 

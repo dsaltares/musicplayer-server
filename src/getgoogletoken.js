@@ -1,10 +1,15 @@
-const makeOAuth2Client = require('./makeoauth2client');
+const OAuth2Client = require('./oauth2client');
 const readline = require('readline');
+const fs = require('fs');
+const { promisify } = require('util');
+const readFile = promisify(fs.readFile);
 
 getAndShowGoogleToken();
 
 async function getAndShowGoogleToken() {
-    const client = await makeOAuth2Client();
+    const content = await readFile('credentials.json');
+    const credentials = JSON.parse(content);
+    const client = await OAuth2Client(credentials);
     const code = await promptForCode(client);
     const token = await getToken(client, code);
 

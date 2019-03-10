@@ -1,13 +1,8 @@
-const fs = require('fs');
 const { google } = require('googleapis');
-const { promisify } = require('util');
-const readFile = promisify(fs.readFile);
 
 module.exports = makeOAuth2Client;
 
-async function makeOAuth2Client(token) {
-    const content = await readFile('credentials.json');
-    const credentials = JSON.parse(content);
+async function makeOAuth2Client(credentials, token) {
     const {
         client_secret,
         client_id,

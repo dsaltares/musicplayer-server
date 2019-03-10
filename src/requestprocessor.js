@@ -1,19 +1,37 @@
-module.exports = {
-    processTracksRequest,
-    processTrackRequest
-};
+module.exports = create;
 
-const makeOAuth2Client = require('./makeoauth2client');
-const { store } = require('./trackstore');
+const OAuth2Client = require('./oauth2client');
+const LastFM = require('./lastfm');
+const Store = require('./trackstore');
+const path = require('path');
 
-async function processTracksRequest(req, res) {
+function create(deps) {
+    return {
+        processTracksRequest: processTracksRequest.bind(null, deps),
+        processTrackRequest: processTrackRequest.bind(null, deps)
+    };
+}
+
+async function processTracksRequest(deps, req, res) {
     const token = JSON.parse(req.headers['googledrive']);
 
     try {
-        const client = await makeOAuth2Client(token);
-        const tracks = await store.getTracks(client, client);
-
-        res.json({ tracks });
+        const client = await OAuth2Client(deps.googleCredentials, token);
+        const store = Store(client);
+        const tracks = await store.getTracks();
+        const lastFm = LastFM(deps.lastFmApiKey);
+        const metadataParams = tracks.map(track => {
+            const parts = track.name.split(' - ');
+            return {
+                artist: parts[0],
+                track: path.basename(parts[1], '.mp3')
+            };
+        });
+        const metadata = await lastFm.metadataForTracks(metadataParams);
+        const tracksWithMetadata = tracks.map((track, index) => {
+            return { ...track, ...metadata[index] };
+        });
+        res.json({ tracks: tracksWithMetadata });
     } catch (err) {
         const errorMsg = 'Failed to get tracks';
         res.json({
@@ -25,13 +43,14 @@ async function processTracksRequest(req, res) {
     }
 }
 
-async function processTrackRequest(req, res) {
+async function processTrackRequest(deps, req, res) {
     const token = JSON.parse(req.headers['googledrive']);
 
     try {
-        const client = await makeOAuth2Client(token);
+        const client = await OAuth2Client(deps.googleCredentials, token);
         const trackId = req.query.id;
-        await store.getTrack(client, trackId, res);
+        const store = Store(client);
+        await store.getTrack(trackId, res);
     } catch (err) {
         const errorMsg = 'Failed to get track';
         res.json({
@@ -41,3 +60,4 @@ async function processTrackRequest(req, res) {
         });
     }
 }
+

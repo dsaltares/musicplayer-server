@@ -2,11 +2,9 @@ const { google } = require('googleapis');
 const { promisify } = require('util');
 const path = require('path');
 
-module.exports = {
-    makeStore
-};
+module.exports = create;
 
-function makeStore(client) {
+function create(client) {
     return {
         getTracks: getTracks.bind(null, client),
         getTrack: getTrack.bind(null, client)

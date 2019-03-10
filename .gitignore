@@ -66,3 +66,4 @@ sonar.bat
 
 # APIs
 credentials.json
+lastfm_api_key.txt
