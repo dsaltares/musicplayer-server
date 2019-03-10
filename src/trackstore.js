@@ -39,9 +39,9 @@ async function getFolderId(drive, folderName) {
         fields: 'files(id, name)'
     });
 
-    if (res.data.files.length > 0) {
-        return res.data.files[0].id;
-    }
+    return res.data.files.length > 0 ?
+        res.data.files[0].id :
+        undefined;
 }
 
 async function getFilesInFolder(drive, folderId) {
