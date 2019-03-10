@@ -7,7 +7,7 @@ const OAuth2Client = require('./oauth2client');
 const Store = require('./trackstore');
 const LastFM = require('./lastfm');
 
-const googleCredentials = JSON.parse(fs.readFileSync('credentials.json', 'utf-8'));
+const googleCredentials = JSON.parse(fs.readFileSync('google_credentials.json', 'utf-8'));
 const lastFmApiKey = fs.readFileSync('lastfm_api_key.txt', 'utf-8').trim();
 
 const processor = Processor({
