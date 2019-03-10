@@ -13,12 +13,18 @@ To get started, install the service dependencies.
 npm install
 ```
 
-## Tests
+## Tests and linting
 
 The service uses [Jest](https://jestjs.io/) as its testing Framework, to run tests and get a coverage report you can simply:
 
 ```bash
 npm run test
+```
+
+For linting.
+
+```bash
+npm run lint
 ```
 
 ## Running the service
@@ -168,3 +174,21 @@ In case of error, the service will return.
     }
 }
 ```
+
+## Potential improvements
+
+### Technical
+
+* Better error handling with documented error codes.
+* Higher unit test coverage.
+* Integration tests.
+* Decent logging and metrics for telemetry.
+* Load tests.
+
+
+### Features
+
+* Configurable Google Drive folder.
+* Different storage options: local, Dropbox...
+* Ability to fetch lyrics.
+* Pagination for large collections: at the moment, it only fetches the first page of Google Drive result (100 entries).
