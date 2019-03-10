@@ -48,11 +48,11 @@ it('getTracks - error response when LastFM rejects', async () => {
         getTracks: jest.fn().mockResolvedValue([
             {
                 id: 'track_1',
-                name: 'Artist 1 - Title 1.mp3'
+                name: 'Artist 1 - Title 1'
             },
             {
                 id: 'track_2',
-                name: 'Artist 2 - Title 2.mp3'
+                name: 'Artist 2 - Title 2'
             }
         ])
     };
@@ -82,11 +82,11 @@ it('getTracks - returns tracks and metadata successfully', async () => {
         getTracks: jest.fn().mockResolvedValue([
             {
                 id: 'track_1',
-                name: 'Artist 1 - Title 1.mp3'
+                name: 'Artist 1 - Title 1'
             },
             {
                 id: 'track_2',
-                name: 'Artist 2 - Title 2.mp3'
+                name: 'Artist 2 - Title 2'
             }
         ])
     };
@@ -120,59 +120,13 @@ it('getTracks - returns tracks and metadata successfully', async () => {
         tracks: [
             {
                 id: 'track_1',
-                name: 'Artist 1 - Title 1.mp3',
+                name: 'Artist 1 - Title 1',
                 album: 'Album 1'
             },
             {
                 id: 'track_2',
-                name: 'Artist 2 - Title 2.mp3',
+                name: 'Artist 2 - Title 2',
                 album: 'Album 2'
-            }
-        ]
-    });
-});
-
-it('getTracks - skips badly formed file names', async () => {
-    const store = {
-        getTracks: jest.fn().mockResolvedValue([
-            {
-                id: 'track_1',
-                name: 'Artist 1 - Title 1.mp3'
-            },
-            {
-                id: 'track_2',
-                name: 'Bad name.ogg'
-            }
-        ])
-    };
-    const lastFM = {
-        metadataForTracks: jest.fn().mockResolvedValue([
-            { album: 'Album 1' },
-            { album: 'Album 2' }
-        ])
-    };
-    const deps = makeDeps(store, lastFM);
-    const processor = Processor(deps);
-    const req = {
-        headers: { googledrive: '{}' }
-    };
-    const res = makeRes();
-
-    await processor.processTracksRequest(req, res);
-
-    expect(store.getTracks).toHaveBeenCalled();
-    expect(lastFM.metadataForTracks).toHaveBeenCalledWith([
-        {
-            artist: 'Artist 1',
-            track: 'Title 1'
-        }
-    ]);
-    expect(res.json).toHaveBeenCalledWith({
-        tracks: [
-            {
-                id: 'track_1',
-                name: 'Artist 1 - Title 1.mp3',
-                album: 'Album 1'
             }
         ]
     });

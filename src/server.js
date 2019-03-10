@@ -1,5 +1,7 @@
 const fs = require('fs');
 const express = require('express');
+const { google } = require('googleapis');
+const { promisify } = require('util');
 const Processor = require('./requestprocessor');
 const OAuth2Client = require('./oauth2client');
 const Store = require('./trackstore');
@@ -11,7 +13,15 @@ const lastFmApiKey = fs.readFileSync('lastfm_api_key.txt', 'utf-8').trim();
 const processor = Processor({
     getStore: async token => {
         const client = await OAuth2Client(googleCredentials, token);
-        return Store(client);
+        const drive = google.drive({
+            version: 'v3',
+            auth: client
+        });
+        const promisifiedDrive = {
+            list: promisify(drive.files.list),
+            get: promisify(drive.files.get)
+        };
+        return Store(promisifiedDrive);
     },
     getLastFM: () => {
         return LastFM(lastFmApiKey);
