@@ -184,6 +184,7 @@ In case of error, the service will return.
 * Integration tests.
 * Decent logging and metrics for telemetry.
 * Load tests.
+* Healthchecks.
 
 
 ### Features
