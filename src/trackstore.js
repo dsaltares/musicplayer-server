@@ -1,21 +1,17 @@
-const { google } = require('googleapis');
-const { promisify } = require('util');
 const path = require('path');
 
 module.exports = create;
 
-function create(client) {
+function create(drive) {
     return {
-        getTracks: getTracks.bind(null, client),
-        getTrack: getTrack.bind(null, client)
+        getTracks: getTracks.bind(null, drive),
+        getTrack: getTrack.bind(null, drive)
     };
 }
 
-async function getTracks(client) {
-    const drive = getDrive(client);
-    const list = promisify(drive.files.list);
-    const folderId = await getTracksFolderId(list);
-    const tracks = await getTracksInFolder(list, folderId);
+async function getTracks(drive) {
+    const folderId = await getTracksFolderId(drive);
+    const tracks = await getTracksInFolder(drive, folderId);
     return tracks.map(track => {
         return {
             name: path.basename(track.name, '.mp3'),
@@ -24,34 +20,31 @@ async function getTracks(client) {
     });
 }
 
-async function getTrack(client, trackId) {
-    const drive = getDrive(client);
-    const get = promisify(drive.files.get);
-    const res = await get(
+async function getTrack(drive, trackId) {
+    const res = await drive.get(
         { fileId: trackId, alt: 'media' },
         { responseType: 'stream' }
     );
     return res.data;
 }
 
-function getDrive(client) {
-    return google.drive({
-        version: 'v3',
-        auth: client
-    });
-}
-
-async function getTracksFolderId(list) {
-    const res = await list({
+async function getTracksFolderId(drive) {
+    const res = await drive.list({
         mimType: 'application/vnd.google-apps.folder',
         q: 'name = "musicplayer"',
         fields: 'files(id, name)'
     });
-    return res.data.files[0].id;
+
+    if (res.data.files.length > 0) {
+        return res.data.files[0].id;
+    }
 }
 
-async function getTracksInFolder(list, folderId) {
-    const res = await list({
+async function getTracksInFolder(drive, folderId) {
+    if (!folderId) {
+        return [];
+    }
+    const res = await drive.list({
         q: `'${folderId}' in parents`,
         fields: 'files(id, name)'
     });
