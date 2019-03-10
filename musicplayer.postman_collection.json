@@ -1,0 +1,131 @@
+{
+	"info": {
+		"_postman_id": "881386b1-c912-4b4f-8d8e-d56bd44f0311",
+		"name": "musicplayer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "tracks",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "google_token",
+						"value": "{{google_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tracks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tracks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "track",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "google_token",
+						"value": "{{google_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/track?id=1JZyeXnz1LKHFHr6n8lT4mqeP6j8SYeo3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"track"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1JZyeXnz1LKHFHr6n8lT4mqeP6j8SYeo3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lastfm track info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://ws.audioscrobbler.com/2.0?api_key=0a492e29226413246a967c7236920c7f&method=track.getInfo&format=json&limit=10&artist=Dover&track=Devil Came To me",
+					"protocol": "http",
+					"host": [
+						"ws",
+						"audioscrobbler",
+						"com"
+					],
+					"path": [
+						"2.0"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "0a492e29226413246a967c7236920c7f"
+						},
+						{
+							"key": "method",
+							"value": "track.getInfo"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "artist",
+							"value": "Dover"
+						},
+						{
+							"key": "track",
+							"value": "Devil Came To me"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

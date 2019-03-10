@@ -10,18 +10,27 @@ function create(apiKey) {
 }
 
 async function metadataForTrack(apiKey, artist, track) {
-    const url = 'http://ws.audioscrobbler.com/2.0';
-    const res = await axios.get(url, {
-        params: {
-            method: 'track.getInfo',
-            api_key: apiKey,
-            format: 'json',
-            artist,
-            track
-        }
-    });
+    try {
+        const url = 'http://ws.audioscrobbler.com/2.0';
+        const res = await axios.get(url, {
+            params: {
+                method: 'track.getInfo',
+                api_key: apiKey,
+                format: 'json',
+                artist,
+                track
+            }
+        });
 
-    return res.data.track;
+        if (!res || !res.data || res.data.error || !res.data.track) {
+            return {};
+        }
+
+        return res.data.track;
+    } catch (err) {
+        console.log('Failed to get metadata for artist: ', artist, ' track: ', track, ' error: ', err.msg);
+        return {};
+    }
 }
 
 function metadataForTracks(apiKey, tracks) {

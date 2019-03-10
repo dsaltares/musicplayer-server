@@ -11,10 +11,10 @@ function create(deps) {
 
 async function processTracksRequest(deps, req, res) {
     try {
-        if (!req.headers.hasOwnProperty('googledrive')) {
+        if (!req.headers.hasOwnProperty('google_token')) {
             throw new Error('No google drive token provided');
         }
-        const token = JSON.parse(req.headers['googledrive']);
+        const token = JSON.parse(req.headers['google_token']);
         const store = await deps.getStore(token);
         const tracks = await store.getTracks();
         const lastFm = deps.getLastFM();
@@ -43,10 +43,10 @@ async function processTracksRequest(deps, req, res) {
 
 async function processTrackRequest(deps, req, res) {
     try {
-        if (!req.headers.hasOwnProperty('googledrive')) {
+        if (!req.headers.hasOwnProperty('google_token')) {
             throw new Error('No google drive token provided');
         }
-        const token = JSON.parse(req.headers['googledrive']);
+        const token = JSON.parse(req.headers['google_token']);
         const trackId = req.query.id;
         const store = await deps.getStore(token);
         const track = await store.getTrack(trackId);
