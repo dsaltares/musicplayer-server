@@ -41,6 +41,39 @@ it('getTracks - successfully returns tracks in folder', async () => {
     expect(drive.list).toHaveBeenCalledTimes(2);
 });
 
+it('getTracks - filters out badly formatted files', async () => {
+    const drive = {
+        list: jest
+            .fn()
+            .mockResolvedValue({
+                data: {
+                    files: [
+                        { id: 'music_folder' }
+                    ]
+                }
+            })
+            .mockResolvedValue({
+                data: {
+                    files: [
+                        { id: 'track_1', name: 'Artist 1 - Track 1.mp3' },
+                        { id: 'bad_track', name: 'Bad Track.mp3' },
+                        { id: 'track_2', name: 'Artist 2 - Track 2.mp3' },
+                        { id: 'bad_format', name: 'Artist 3 - Track 3.ogg' }
+                    ]
+                }
+            })
+    };
+    const store = Store(drive);
+
+    const tracks = await store.getTracks();
+
+    expect(tracks).toEqual([
+        { id: 'track_1', name: 'Artist 1 - Track 1' },
+        { id: 'track_2', name: 'Artist 2 - Track 2' }
+    ]);
+    expect(drive.list).toHaveBeenCalledTimes(2);
+});
+
 it('getTracks - handles not finding a music folder', async () => {
     const drive = {
         list: jest.fn().mockResolvedValue({

@@ -1,7 +1,6 @@
 module.exports = create;
 
 const path = require('path');
-const ValidTrackRegex = /^[^-]* - [^-]*$/;
 
 function create(deps) {
     return {
@@ -18,9 +17,8 @@ async function processTracksRequest(deps, req, res) {
         const token = JSON.parse(req.headers['googledrive']);
         const store = await deps.getStore(token);
         const tracks = await store.getTracks();
-        const validTracks = tracks.filter(track => ValidTrackRegex.test(track.name));
         const lastFm = deps.getLastFM();
-        const metadataParams = validTracks.map(track => {
+        const metadataParams = tracks.map(track => {
             const parts = track.name.split(' - ');
             return {
                 artist: parts[0],
@@ -28,7 +26,7 @@ async function processTracksRequest(deps, req, res) {
             };
         });
         const metadata = await lastFm.metadataForTracks(metadataParams);
-        const tracksWithMetadata = validTracks.map((track, index) => {
+        const tracksWithMetadata = tracks.map((track, index) => {
             return { ...track, ...metadata[index] };
         });
         res.json({ tracks: tracksWithMetadata });

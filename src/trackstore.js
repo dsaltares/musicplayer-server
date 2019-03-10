@@ -1,6 +1,8 @@
+module.exports = create;
+
 const path = require('path');
 
-module.exports = create;
+const ValidTrackRegex = /^[^-]* - [^-]*.mp3$/;
 
 function create(drive) {
     return {
@@ -10,14 +12,16 @@ function create(drive) {
 }
 
 async function getTracks(drive) {
-    const folderId = await getTracksFolderId(drive);
-    const tracks = await getTracksInFolder(drive, folderId);
-    return tracks.map(track => {
-        return {
-            name: path.basename(track.name, '.mp3'),
-            id: track.id
-        };
-    });
+    const folderId = await getFolderId(drive, 'musicplayer');
+    const files = await getFilesInFolder(drive, folderId);
+    return files
+        .filter(file => ValidTrackRegex.test(file.name))
+        .map(file => {
+            return {
+                name: path.basename(file.name, '.mp3'),
+                id: file.id
+            };
+        });
 }
 
 async function getTrack(drive, trackId) {
@@ -28,10 +32,10 @@ async function getTrack(drive, trackId) {
     return res.data;
 }
 
-async function getTracksFolderId(drive) {
+async function getFolderId(drive, folderName) {
     const res = await drive.list({
         mimType: 'application/vnd.google-apps.folder',
-        q: 'name = "musicplayer"',
+        q: `name = "${folderName}"`,
         fields: 'files(id, name)'
     });
 
@@ -40,7 +44,7 @@ async function getTracksFolderId(drive) {
     }
 }
 
-async function getTracksInFolder(drive, folderId) {
+async function getFilesInFolder(drive, folderId) {
     if (!folderId) {
         return [];
     }
