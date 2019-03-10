@@ -5,7 +5,7 @@ it('can be instantiated without crashing', () => {
     expect(processor).toBeDefined();
 });
 
-it('getTracks - error response when no googledrive token is present in the header', async () => {
+it('getTracks - error response when no google_token token is present in the header', async () => {
     const deps = {};
     const processor = Processor(deps);
     const req = {
@@ -29,7 +29,7 @@ it('getTracks - error response when the track store rejects', async () => {
     const deps = makeDeps(store);
     const processor = Processor(deps);
     const req = {
-        headers: { googledrive: '{}' }
+        headers: { google_token: '{}' }
     };
     const res = makeRes();
 
@@ -62,7 +62,7 @@ it('getTracks - error response when LastFM rejects', async () => {
     const deps = makeDeps(store, lastFM);
     const processor = Processor(deps);
     const req = {
-        headers: { googledrive: '{}' }
+        headers: { google_token: '{}' }
     };
     const res = makeRes();
 
@@ -99,7 +99,7 @@ it('getTracks - returns tracks and metadata successfully', async () => {
     const deps = makeDeps(store, lastFM);
     const processor = Processor(deps);
     const req = {
-        headers: { googledrive: '{}' }
+        headers: { google_token: '{}' }
     };
     const res = makeRes();
 
@@ -132,7 +132,7 @@ it('getTracks - returns tracks and metadata successfully', async () => {
     });
 });
 
-it('getTrack - error response when no googledrive token is present in the header', async () => {
+it('getTrack - error response when no google_token token is present in the header', async () => {
     const deps = {};
     const processor = Processor(deps);
     const req = {
@@ -158,7 +158,7 @@ it('getTrack - error response when the track store rejects', async () => {
     const processor = Processor(deps);
     const req = {
         query: { id: 'track_1' },
-        headers: { googledrive: '{}' }
+        headers: { google_token: '{}' }
     };
     const res = makeRes();
 
@@ -183,7 +183,7 @@ it('getTrack - pipes the track into the response', async () => {
     const processor = Processor(deps);
     const req = {
         query: { id: 'track_1' },
-        headers: { googledrive: '{}' }
+        headers: { google_token: '{}' }
     };
     const res = makeRes();
 
