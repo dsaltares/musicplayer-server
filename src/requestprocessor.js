@@ -1,9 +1,7 @@
 module.exports = create;
 
-const OAuth2Client = require('./oauth2client');
-const LastFM = require('./lastfm');
-const Store = require('./trackstore');
 const path = require('path');
+const ValidTrackRegex = /^[^-]* - [^-]*.mp3$/;
 
 function create(deps) {
     return {
@@ -13,14 +11,16 @@ function create(deps) {
 }
 
 async function processTracksRequest(deps, req, res) {
-    const token = JSON.parse(req.headers['googledrive']);
-
     try {
-        const client = await OAuth2Client(deps.googleCredentials, token);
-        const store = Store(client);
+        if (!req.headers.hasOwnProperty('googledrive')) {
+            throw new Error('No google drive token provided');
+        }
+        const token = JSON.parse(req.headers['googledrive']);
+        const store = await deps.getStore(token);
         const tracks = await store.getTracks();
-        const lastFm = LastFM(deps.lastFmApiKey);
-        const metadataParams = tracks.map(track => {
+        const validTracks = tracks.filter(track => ValidTrackRegex.test(track.name));
+        const lastFm = deps.getLastFM();
+        const metadataParams = validTracks.map(track => {
             const parts = track.name.split(' - ');
             return {
                 artist: parts[0],
@@ -28,12 +28,12 @@ async function processTracksRequest(deps, req, res) {
             };
         });
         const metadata = await lastFm.metadataForTracks(metadataParams);
-        const tracksWithMetadata = tracks.map((track, index) => {
+        const tracksWithMetadata = validTracks.map((track, index) => {
             return { ...track, ...metadata[index] };
         });
         res.json({ tracks: tracksWithMetadata });
     } catch (err) {
-        const errorMsg = 'Failed to get tracks';
+        const errorMsg = `Failed to get tracks: ${err.msg}`;
         res.json({
             error: {
                 msg: errorMsg
@@ -44,15 +44,17 @@ async function processTracksRequest(deps, req, res) {
 }
 
 async function processTrackRequest(deps, req, res) {
-    const token = JSON.parse(req.headers['googledrive']);
-
     try {
-        const client = await OAuth2Client(deps.googleCredentials, token);
+        if (!req.headers.hasOwnProperty('googledrive')) {
+            throw new Error('No google drive token provided');
+        }
+        const token = JSON.parse(req.headers['googledrive']);
         const trackId = req.query.id;
-        const store = Store(client);
-        await store.getTrack(trackId, res);
+        const store = await deps.getStore(token);
+        const track = await store.getTrack(trackId);
+        track.pipe(res);
     } catch (err) {
-        const errorMsg = 'Failed to get track';
+        const errorMsg = `Failed to get track: ${err.msg}`;
         res.json({
             error: {
                 msg: errorMsg
