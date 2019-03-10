@@ -7,7 +7,7 @@ const readFile = promisify(fs.readFile);
 getAndShowGoogleToken();
 
 async function getAndShowGoogleToken() {
-    const content = await readFile('credentials.json');
+    const content = await readFile('google_credentials.json');
     const credentials = JSON.parse(content);
     const client = await OAuth2Client(credentials);
     const code = await promptForCode(client);

@@ -25,7 +25,7 @@ npm run test
 
 Get an API account for Last.fm [here](https://www.last.fm/api/account/create), copy the key and put it in a `lastfm_api_key.txt` file in the root of the repository.
 
-Download the Google Drive client configuration from [Google's quickstart guide](https://developers.google.com/drive/api/v3/quickstart/nodejs). Add it as a `credentials.json` file to the repository root.
+Download the Google Drive client configuration from [Google's quickstart guide](https://developers.google.com/drive/api/v3/quickstart/nodejs). Add it as a `google_credentials.json` file to the repository root.
 
 Now you can run the service via:
 
