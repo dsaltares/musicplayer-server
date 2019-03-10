@@ -1,7 +1,7 @@
 module.exports = create;
 
 const path = require('path');
-const ValidTrackRegex = /^[^-]* - [^-]*.mp3$/;
+const ValidTrackRegex = /^[^-]* - [^-]*$/;
 
 function create(deps) {
     return {
