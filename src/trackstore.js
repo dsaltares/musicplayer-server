@@ -24,14 +24,14 @@ async function getTracks(client) {
     });
 }
 
-async function getTrack(client, trackId, dest) {
+async function getTrack(client, trackId) {
     const drive = getDrive(client);
     const get = promisify(drive.files.get);
     const res = await get(
         { fileId: trackId, alt: 'media' },
         { responseType: 'stream' }
     );
-    return res.data.pipe(dest);
+    return res.data;
 }
 
 function getDrive(client) {

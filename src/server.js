@@ -1,12 +1,21 @@
 const fs = require('fs');
 const express = require('express');
 const Processor = require('./requestprocessor');
+const OAuth2Client = require('./oauth2client');
+const Store = require('./trackstore');
+const LastFM = require('./lastfm');
 
 const googleCredentials = JSON.parse(fs.readFileSync('credentials.json', 'utf-8'));
 const lastFmApiKey = fs.readFileSync('lastfm_api_key.txt', 'utf-8').trim();
+
 const processor = Processor({
-    googleCredentials,
-    lastFmApiKey
+    getStore: async token => {
+        const client = await OAuth2Client(googleCredentials, token);
+        return Store(client);
+    },
+    getLastFM: () => {
+        return LastFM(lastFmApiKey);
+    }
 });
 
 const router = express.Router();
