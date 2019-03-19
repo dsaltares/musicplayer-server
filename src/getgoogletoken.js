@@ -1,15 +1,11 @@
 const OAuth2Client = require('./oauth2client');
 const readline = require('readline');
-const fs = require('fs');
-const { promisify } = require('util');
-const readFile = promisify(fs.readFile);
+const Credentials = require('../credentials.json');
 
 getAndShowGoogleToken();
 
 async function getAndShowGoogleToken() {
-    const content = await readFile('google_credentials.json');
-    const credentials = JSON.parse(content);
-    const client = await OAuth2Client(credentials);
+    const client = await OAuth2Client(Credentials.Google);
     const code = await promptForCode(client);
     const token = await getToken(client, code);
 
@@ -20,6 +16,7 @@ function promptForCode(client) {
     const authUrl = client.generateAuthUrl({
         access_type: 'offline',
         scope: [
+            'profile',
             'https://www.googleapis.com/auth/drive.metadata.readonly',
             'https://www.googleapis.com/auth/drive.readonly'
         ]

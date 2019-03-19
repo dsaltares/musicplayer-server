@@ -65,5 +65,4 @@ typings/
 sonar.bat
 
 # APIs
-google_credentials.json
-lastfm_api_key.txt
+credentials.json

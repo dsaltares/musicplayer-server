@@ -14,9 +14,13 @@
     },
     "dependencies": {
         "axios": "^0.18.0",
+        "cors": "^2.8.5",
         "express": "^4.16.4",
+        "express-session": "^1.15.6",
         "googleapis": "^27.0.0",
-        "music-metadata": "^3.5.2"
+        "passport": "^0.4.0",
+        "passport-google-oauth2": "^0.2.0",
+        "socket.io": "^2.2.0"
     },
     "jest": {
         "collectCoverage": true,
@@ -32,6 +36,9 @@
             "!**/*.test.js",
             "!**/node_modules/**",
             "!**/coverage/**"
+        ],
+        "watchPathIgnorePatterns": [
+            "node_modules"
         ]
     }
 }

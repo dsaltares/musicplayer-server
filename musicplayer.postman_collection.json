@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "881386b1-c912-4b4f-8d8e-d56bd44f0311",
+		"_postman_id": "534b44ab-23d5-4b05-be07-5fd6a739b58d",
 		"name": "musicplayer",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -12,19 +12,13 @@
 					"type": "noauth"
 				},
 				"method": "GET",
-				"header": [
-					{
-						"key": "google_token",
-						"value": "{{google_token}}",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/tracks",
+					"raw": "http://localhost:8080/api/tracks?google_token={{google_token}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -33,6 +27,12 @@
 					"path": [
 						"api",
 						"tracks"
+					],
+					"query": [
+						{
+							"key": "google_token",
+							"value": "{{google_token}}"
+						}
 					]
 				}
 			},
@@ -57,7 +57,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/track?id=1JZyeXnz1LKHFHr6n8lT4mqeP6j8SYeo3",
+					"raw": "http://localhost:8080/api/track?id=1JZyeXnz1LKHFHr6n8lT4mqeP6j8SYeo3&google_token={{google_token}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -71,6 +71,10 @@
 						{
 							"key": "id",
 							"value": "1JZyeXnz1LKHFHr6n8lT4mqeP6j8SYeo3"
+						},
+						{
+							"key": "google_token",
+							"value": "{{google_token}}"
 						}
 					]
 				}
