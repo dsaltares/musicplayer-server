@@ -1,19 +1,19 @@
-const Processor = require('./requestprocessor');
+const Controller = require('./apicontroller');
 
 it('can be instantiated without crashing', () => {
-    const processor = Processor({});
-    expect(processor).toBeDefined();
+    const controller = Controller({});
+    expect(controller).toBeDefined();
 });
 
 it('getTracks - error response when no google_token token is present in the header', async () => {
     const deps = {};
-    const processor = Processor(deps);
+    const controller = Controller(deps);
     const req = {
-        headers: {}
+        query: {}
     };
     const res = makeRes();
 
-    await processor.processTracksRequest(req, res);
+    await controller.processTracksRequest(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
         error: {
@@ -27,13 +27,13 @@ it('getTracks - error response when the track store rejects', async () => {
         getTracks: jest.fn().mockRejectedValue(new Error('Store error'))
     };
     const deps = makeDeps(store);
-    const processor = Processor(deps);
+    const controller = Controller(deps);
     const req = {
-        headers: { google_token: '{}' }
+        query: { google_token: '{}' }
     };
     const res = makeRes();
 
-    await processor.processTracksRequest(req, res);
+    await controller.processTracksRequest(req, res);
 
     expect(store.getTracks).toHaveBeenCalled();
     expect(res.json).toHaveBeenCalledWith({
@@ -60,13 +60,13 @@ it('getTracks - error response when LastFM rejects', async () => {
         metadataForTracks: jest.fn().mockRejectedValue(new Error('LastFM Error'))
     };
     const deps = makeDeps(store, lastFM);
-    const processor = Processor(deps);
+    const controller = Controller(deps);
     const req = {
-        headers: { google_token: '{}' }
+        query: { google_token: '{}' }
     };
     const res = makeRes();
 
-    await processor.processTracksRequest(req, res);
+    await controller.processTracksRequest(req, res);
 
     expect(store.getTracks).toHaveBeenCalled();
     expect(lastFM.metadataForTracks).toHaveBeenCalled();
@@ -97,13 +97,13 @@ it('getTracks - returns tracks and metadata successfully', async () => {
         ])
     };
     const deps = makeDeps(store, lastFM);
-    const processor = Processor(deps);
+    const controller = Controller(deps);
     const req = {
-        headers: { google_token: '{}' }
+        query: { google_token: '{}' }
     };
     const res = makeRes();
 
-    await processor.processTracksRequest(req, res);
+    await controller.processTracksRequest(req, res);
 
     expect(store.getTracks).toHaveBeenCalled();
     expect(lastFM.metadataForTracks).toHaveBeenCalledWith([
@@ -134,14 +134,13 @@ it('getTracks - returns tracks and metadata successfully', async () => {
 
 it('getTrack - error response when no google_token token is present in the header', async () => {
     const deps = {};
-    const processor = Processor(deps);
+    const controller = Controller(deps);
     const req = {
-        query: { id: 'track_1' },
-        headers: {}
+        query: { id: 'track_1' }
     };
     const res = makeRes();
 
-    await processor.processTrackRequest(req, res);
+    await controller.processTrackRequest(req, res);
 
     expect(res.json).toHaveBeenCalledWith({
         error: {
@@ -155,14 +154,16 @@ it('getTrack - error response when the track store rejects', async () => {
         getTrack: jest.fn().mockRejectedValue(new Error('Store error'))
     };
     const deps = makeDeps(store);
-    const processor = Processor(deps);
+    const controller = Controller(deps);
     const req = {
-        query: { id: 'track_1' },
-        headers: { google_token: '{}' }
+        query: {
+            id: 'track_1',
+            google_token: '{}'
+        }
     };
     const res = makeRes();
 
-    await processor.processTrackRequest(req, res);
+    await controller.processTrackRequest(req, res);
 
     expect(store.getTrack).toHaveBeenCalledWith('track_1');
     expect(res.json).toHaveBeenCalledWith({
@@ -180,14 +181,16 @@ it('getTrack - pipes the track into the response', async () => {
         getTrack: jest.fn().mockResolvedValue(track)
     };
     const deps = makeDeps(store);
-    const processor = Processor(deps);
+    const controller = Controller(deps);
     const req = {
-        query: { id: 'track_1' },
-        headers: { google_token: '{}' }
+        query: {
+            id: 'track_1',
+            google_token: '{}'
+        }
     };
     const res = makeRes();
 
-    await processor.processTrackRequest(req, res);
+    await controller.processTrackRequest(req, res);
 
     expect(store.getTrack).toHaveBeenCalledWith('track_1');
     expect(track.pipe).toHaveBeenCalledWith(res);

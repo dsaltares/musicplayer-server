@@ -23,12 +23,21 @@ async function metadataForTrack(apiKey, artist, track) {
         });
 
         if (!res || !res.data || res.data.error || !res.data.track) {
+            console.log(
+                'Unexpected response when requesting metadata for artist: ', artist,
+                ' track: ', track,
+                ' res: ', res
+            );
             return {};
         }
 
         return res.data.track;
     } catch (err) {
-        console.log('Failed to get metadata for artist: ', artist, ' track: ', track, ' error: ', err.msg);
+        console.log(
+            'Failed to get metadata for artist: ', artist,
+            ' track: ', track,
+            ' error: ', err.msg
+        );
         return {};
     }
 }

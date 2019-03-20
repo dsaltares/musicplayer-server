@@ -30,9 +30,37 @@ npm run lint
 
 ## Running the service
 
-Get an API account for Last.fm [here](https://www.last.fm/api/account/create), copy the key and put it in a `lastfm_api_key.txt` file in the root of the repository.
+Create a `credentials.json` file in the root of the repository.
 
-Download the Google Drive client configuration from [Google's quickstart guide](https://developers.google.com/drive/api/v3/quickstart/nodejs). Add it as a `google_credentials.json` file to the repository root.
+```
+{}
+```
+
+* Get an API account for Last.fm [here](https://www.last.fm/api/account/create), copy the key and put it in the `LastFM` property
+* Download the Google Drive client configuration from [Google's quickstart guide](https://developers.google.com/drive/api/v3/quickstart/nodejs). Set its contents to the `Google` property.
+* Generate a [session key](https://randomkeygen.com/) and add it to the `SessionSecret` property.
+
+The file should look like:
+
+```json
+{
+    "Google": {
+        "installed": {
+            "client_id": "client_id",
+            "project_id": "project_id",
+            "auth_uri": "auth_uri",
+            "token_uri": "token_uri",
+            "auth_provider_x509_cert_url": "auth_provider_x509_cert_url",
+            "client_secret": "client_secret",
+            "redirect_uris": [
+                "redirect_uris"
+            ]
+        }
+    },
+    "LastFM": "last_fm_key",
+    "SessionSecret": "session_secret"
+}
+```
 
 Now you can run the service via:
 
@@ -67,7 +95,7 @@ You need to setup an environment variable called `google_token` and set its valu
 
 The API only supports the `get` method.
 
-### tracks
+### `/api/tracks`
 
 Retrieves all tracks inside the `musicplayer` folder in your Google Drive account that match the `Artist - Track Name.mp3` pattern. It then enriches the list with Last.fm metadata.
 
@@ -151,7 +179,7 @@ In case of error, the service will return.
 }
 ```
 
-### track
+### `/api/track`
 
 Returns the mp3 stream for the given track id.
 
@@ -186,6 +214,7 @@ In case of error, the service will return.
 * Decent logging and metrics for telemetry.
 * Load tests.
 * Healthchecks.
+* Use environment variables for keys instead of config files.
 
 
 ### Features

@@ -36,10 +36,10 @@ async function processTrackRequest(deps, req, res) {
 }
 
 function getGoogleToken(req) {
-    if (!req.headers.hasOwnProperty('google_token')) {
+    if (!req.query.hasOwnProperty('google_token')) {
         throw new Error('No google drive token provided');
     }
-    return JSON.parse(req.headers['google_token']);
+    return JSON.parse(req.query['google_token']);
 }
 
 async function getTracksMetadata(lastFm, tracks) {
