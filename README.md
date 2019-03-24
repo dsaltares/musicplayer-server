@@ -101,11 +101,7 @@ Retrieves all tracks inside the `musicplayer` folder in your Google Drive accoun
 
 #### Params
 
-None.
-
-#### Headers
-
-* `google_token`: the Google Drive authorization token for the user.
+* `google_token`: the Google Drive authorization token for the user. Not that this should really be sent via https.
 
 #### Sample Response
 
@@ -186,11 +182,7 @@ Returns the mp3 stream for the given track id.
 #### Params
 
 * `id`: the Google Drive file id as returned by the `tracks` request.
-
-#### Headers
-
 * `google_token`: the Google Drive authorization token for the user.
-
 
 #### Errors
 
@@ -204,10 +196,42 @@ In case of error, the service will return.
 }
 ```
 
+### `/auth/google`
+
+Initiates the OAuth2 authentication process with Google. The server expects a socket connection to exist already.
+
+#### Params
+
+* `socketId`: the id of the socket connection between client-server.
+
+### Sample response
+
+The client will receive a `google` socket message with the following contents.
+
+```json
+{
+    "profile": {
+        "provider": "google",
+        "id": "id",
+        "displayName": "display name",
+        "name": {
+            givenName: "name",
+            familyName: "surname"
+        },
+        "language": "en-GB",
+        "gender": "gender",
+        "picture": "url"
+        ...
+    },
+    "accessToken": "token"
+}
+```
+
 ## Potential improvements
 
 ### Technical
 
+* HTTPS
 * Better error handling with documented error codes.
 * Higher unit test coverage.
 * Integration tests.
