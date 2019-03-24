@@ -215,8 +215,8 @@ The client will receive a `google` socket message with the following contents.
         "id": "id",
         "displayName": "display name",
         "name": {
-            givenName: "name",
-            familyName: "surname"
+            "givenName": "name",
+            "familyName": "surname"
         },
         "language": "en-GB",
         "gender": "gender",
