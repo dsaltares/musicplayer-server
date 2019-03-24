@@ -6,6 +6,8 @@
 
 Backend for a simple music player app written in [Node.js](https://nodejs.org/en/) using [Express](https://expressjs.com/). It gets a list of tracks from a folder in the user's Google Drive account and fetches track metadata from [Last.fm](https://www.last.fm/api).
 
+You will find the frontend in [dsaltares/musicplayer-ui](https://github.com/dsaltares/musicplayer-ui).
+
 ## Setup
 
 To get started, install the service dependencies.
